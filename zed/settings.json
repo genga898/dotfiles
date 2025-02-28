@@ -1,0 +1,120 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  "icon_theme": "Bearded Icon Theme",
+  "assistant": {
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-3-5-sonnet-20240620"
+    },
+    "version": "2"
+  },
+  "theme": "Bearded Theme Black Amethyst",
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true,
+    "edit_debounce_ms": 400
+  },
+  "restore_on_startup": "last_workspace",
+  "languages": {
+    "Vue.js": {
+      "language_servers": [
+        "vue-language-server",
+        "prettier",
+        "eslint",
+        "tailwindcss-language-server",
+        "typescript-language-server",
+        "vscode-html-language-server"
+      ],
+      "formatter": "language_server",
+      "show_edit_predictions": true,
+      "format_on_save": "prettier" 
+    },
+    "CSharp": {
+      "show_edit_predictions": true,
+      "formatter": "language_server",
+      "language_servers": [
+        "omnisharp"
+      ],
+      "format_on_save": "language_server"
+    },
+    "JavaScript": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      },
+      "formatter": "prettier",
+      "language_servers": [
+        "prettier",
+        "eslint"
+      ],
+      "format_on_save": "language_server"
+    },
+    "TypeScript": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      },
+      "formatter": "prettier",
+      "language_servers": [
+        "prettier",
+        "eslint",
+        "vtsls"
+      ]
+    },
+    "TSX": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      },
+      "formatter": "prettier"
+    }
+  },
+  "lsp": {
+    "eslint": {
+      "settings": {
+        "codeActionOnSave": {
+          "rules": [
+            "import/order"
+          ]
+        }
+      }
+    }
+  },
+  "tabs": {
+    "file_icons": true,
+    "git_status": true
+  },
+  "ui_font_size": 15,
+  "buffer_font_size": 13.0,
+  "terminal": {
+    "font_family": "JetBrainsMono Nerd Font",
+    "font_size": 13,
+    "font_weight": 50
+  },
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "buffer_font_weight": 450,
+  "vim_mode": true,
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 10
+    }
+  },
+  "auto_update": true,
+  "scrollbar": {
+    "show": "system"
+  },
+  "formatter": "language_server",
+  "format_on_save": "on",
+  "git_status": true
+}

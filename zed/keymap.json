@@ -1,0 +1,11 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-shift-r": "projects::OpenRecent",
+      "ctrl-r": "vim::Redo",
+      "ctrl-y": "editor::ConfirmCompletion",
+     "space f": "editor::Format" 
+    }
+  }
+]
