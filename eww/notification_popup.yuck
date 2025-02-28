@@ -1,0 +1,16 @@
+(defwidget notification_popup [ ]
+  (box
+    :orientation 'v'
+    :space-evenly false
+    :spacing 10
+    (for i in "[2,1,0]"
+      (revealer
+        :transition 'slidedown'
+        :reveal { notifications.popups[i] == "null" ? false : true }
+        :duration '2s'
+        (box
+          :orientation "h"
+          :space-evenly false
+          :class "notifications-popup-body"
+          (notification
+            :notify { notifications.popups[i] }))))))

@@ -1,0 +1,81 @@
+(include "variables.yuck")
+(include "bar-widgets.yuck")
+(include "notification-tray.yuck")
+(include "notification_popup.yuck")
+
+(defwidget bar [ ]
+  (box
+    :class "bar"
+    :orientation "h"
+    :space-evenly true
+    (box
+      :orientation "h"
+      :space-evenly false
+      :spacing 7
+      :halign "start"
+      (launcher)
+      (workspaces)
+      (window))
+
+    (box
+      :orientation "h"
+      :halign "center"
+      (clock))
+
+    (box
+      :orientation "h"
+      :space-evenly false
+      :spacing 5
+      :halign "end"
+      (backlight)
+      (volume)
+      (battery)
+      (system-tray)
+      (notification-center)
+      (power))))
+
+(defwindow topbar
+  :monitor 0
+  :geometry
+  (geometry
+    :x "0%"
+    :y "5px"
+    :width "99.5%"
+    :height "30px"
+    :anchor "top center")
+  :stacking "fg"
+  :exclusive true
+  :reserve
+  (struts
+    :distance "5px"
+    :side "top")
+  :windowtype "toolbar"
+  :wm-ignore false
+  (bar))
+
+(defwindow notification_window
+  :monitor 0
+  :geometry
+  (geometry
+    :x "6px"
+    :y "8px"
+    :height "95%"
+    :width "400px"
+    :anchor "top right")
+  :stacking 'overlay'
+  :focusable false
+
+  (notification_box))
+
+(defwindow notification_popup_window
+  :monitor 0
+  :geometry
+  (geometry
+    :x "8px"
+    :y "8px"
+    :width "400px"
+    :anchor "top right")
+  :stacking 'overlay'
+  :focusable false
+
+  (notification_popup))

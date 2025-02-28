@@ -1,0 +1,103 @@
+(defwidget notification [ notify ]
+  (box
+    :orientation 'v'
+    :space-evenly false
+    :spacing 5
+    :hexpand true
+    :class "notification_card ${notify.urgency == 2 ? "critical" : ""}"
+    (box
+      :orientation 'h'
+      :space-evenly false
+      :spacing 10
+      :hexpand true
+      (image
+        :valign 'center'
+        :class 'image'
+        :visible { notify.image != "" ? true : false }
+        :path { notify.image }
+        :image-width 60
+        :image-height 60)
+      (box
+        :orientation 'v'
+        :hexpand true
+        :space-evenly false
+
+        (box
+          :space-evenly true
+          :orientation 'h'
+          (label
+            :halign 'start'
+            :text { notify.app })
+          (button
+            :halign 'end'
+            :onclick "scripts/notifications/notifications.sh close ${notify.id}"
+            :class 'close_notification'
+            "󰅖"))
+
+        (label
+          :halign 'start'
+          :visible { notify.summary != "null" ? true : false }
+          :wrap true
+          :markup { notify.summary })
+        (label
+          :halign 'start'
+          :visible { notify.body != "null" ? true : false }
+          :wrap true
+          :markup { notify.body })))
+    (box
+      :orientation 'h'
+      :hexpand true
+      :visible { notify.actions != "[]" ? true : false }
+      :spacing 5
+      (for action in { notify.actions }
+        (button
+          :class "notification_action"
+          :visible { action[1] != "" ? true : false }
+          :onclick "scripts/notifications/notifications.sh action ${notify.id} ${action[0]}"
+          { action[1] })))))
+
+(defwidget notification_box [ ]
+  (box
+    :orientation 'v'
+    :space-evenly false
+    :spacing 10
+    :class "notification_box"
+
+    (box
+      :orientation 'h'
+      :valign 'start'
+      (label
+        :halign 'start'
+        :valign 'end'
+        :text 'Notifications')
+      (button
+        :halign 'end'
+        :onclick 'scripts/notifications/notifications.sh clear'
+        :class 'clear_all_notifs'
+        "Clear All"))
+    (scroll
+      :vscroll true
+      :vexpand true
+      (box
+        :orientation 'v'
+        :class "scroll_view"
+        :space-evenly false
+        :spacing 10(for notify in { notifications.notifications }
+          (notification
+            :notify { notify }))
+        (label
+          :vexpand true
+          :valign "center"
+          :text " No notifications"
+          :visible { notifications.notifications != "[]" ? false : true })))
+    (box
+      :orientation 'h'
+      :spacing 10
+      (button
+        :onclick 'scripts/notifications/notifications.sh togglednd'
+        :class 'do_not_disturb ${do_not_disturb == true ? "disturbance_off" : ""}'
+        "Do not Disturb")
+      (button
+        :class "close_notification_menu"
+        :onclick 'eww open notification_window --toggle'
+        'Close'))))

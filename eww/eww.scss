@@ -1,0 +1,235 @@
+* {
+  all: unset; // Unsets everything so you can style everything from scratch
+  font-family: "FreeSans";
+}
+
+// Start 
+
+.home {
+  border-radius: 10px;
+  padding: 3px 10px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+
+  button {
+    font-size: 20px;
+  }
+}
+
+.workspace-container {
+  border-radius: 10px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+}
+
+.workspaces {
+
+  padding: 3px 15px;
+
+  button {
+    padding: 1px 7px;
+  }
+
+  button:hover {
+    transition: none;
+    box-shadow: inherit;
+    text-shadow: inherit;
+    color: #B69F7E;
+  }
+
+  button.focused:hover {
+    color: #242019;
+  }
+}
+
+.current_window {
+  border-radius: 10px;
+  padding: 3px 15px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+}
+
+
+// Center
+.clock-face {
+  border-radius: 10px;
+  padding: 3px 15px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+
+  tooltip {
+    background: #1F1F28;
+  }
+}
+
+// End
+.backlight {
+  border-radius: 10px;
+  padding: 3px 10px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+}
+
+.volume {
+  border-radius: 10px;
+  padding: 3px 10px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+  font-size: 15px;
+}
+
+.battery {
+  border-radius: 10px;
+  padding: 3px 10px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+}
+
+.charging_bat {
+  color: #1F1F28;
+  background-color: #F1F1F1;
+}
+
+.low_bat {
+  background-color: #E46876;
+  color: #F1F1F1;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes blink {
+  to {
+    background-color: #DCD7BA;
+    color: #B5E8E0;
+  }
+}
+
+.sys-tray {
+  border-radius: 10px;
+  padding: 3px 10px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+
+  menu {
+    border-radius: 10px;
+    background-color: #1F1F28;
+    padding: 10px 10px;
+    border: 1px solid #C8C093;
+
+    >menuitem {
+      padding: 5px 5px;
+      border-radius: 5px;
+
+      &:hover {
+        background: #B69F7E;
+      }
+    }
+  }
+}
+
+.notification {
+  border-radius: 10px;
+  padding: 3px 10px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+}
+
+.power {
+  border-radius: 10px;
+  padding: 3px 10px;
+  background: #1F1F28;
+  transition: none;
+  border: 1px solid #C8C093;
+  font-size: 15px;
+}
+
+// Notification Box
+.notification_box {
+  border-radius: 10px;
+  padding: 10px;
+  background: #1F1F28;
+  border: 1px solid #C8C093;
+}
+
+.close_notification {
+  font-size: 18px;
+
+  &:hover {
+    color: #C8C093;
+  }
+}
+
+.notification_card {
+  background: #2A2A37;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #F1F1F1;
+}
+
+.critical {
+  background: #C34043;
+}
+
+.notification_action {
+  border-radius: 10px;
+  padding: 5px 10px;
+  background: #C8C093;
+  color: #242019;
+
+  &:hover {
+    background-color: #F1F1F1;
+  }
+}
+
+.clear_all_notifs {
+  border-radius: 10px;
+  padding: 5px 10px;
+  background: #C8C093;
+  color: #242019;
+
+  &:hover {
+    background-color: #F1F1F1;
+  }
+}
+
+.close_notification_menu {
+  border-radius: 10px;
+  padding: 5px 10px;
+  background: #C8C093;
+  color: #242019;
+
+  &:hover {
+    background-color: #F1F1F1;
+  }
+}
+
+.do_not_disturb {
+  border-radius: 10px;
+  padding: 5px 10px;
+  background: #C8C093;
+  color: #242019;
+
+  &:hover {
+    background-color: #F1F1F1;
+  }
+}
+
+.disturbance_off {
+  background-color: #D27E99;
+
+  &:hover {
+    background-color: #FFA066;
+  }
+}

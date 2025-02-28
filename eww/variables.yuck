@@ -1,0 +1,31 @@
+(deflisten notifications
+  :initial '{"count": 0, "notifications": [], "popups": []}'
+  "scripts/notifications/notifications.sh current")
+
+(deflisten do_not_disturb
+  :initial false
+  "scripts/notifications/notifications.sh getdnd")
+
+(deflisten brightness_val
+  :initial 0
+  "scripts/brightness/get-brightness.sh")
+
+(deflisten volume_val
+  :initial 0
+  "scripts/volume/get-volume.sh")
+
+(deflisten is_muted
+  :initial "Unmuted"
+  "scripts/volume/check-muted.sh")
+
+(deflisten current_workspace
+  :initial "1"
+  "scripts/change-active-workspace.sh")
+
+(deflisten workspaces
+  :initial "[1, 2, 3, 4, 5]"
+  "scripts/get-workspaces.sh")
+
+(deflisten current_window
+  :initial "NixOs"
+  "scripts/get-current-window.sh")
