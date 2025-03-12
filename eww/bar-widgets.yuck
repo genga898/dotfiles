@@ -47,7 +47,7 @@
 ;; Right;;
 (defwidget backlight []
   (box :class "backlight"
-    " ${round(brightness_val, 0)}%"
+    "  ${round(brightness_val, 0)}%"
   )
 )
 
@@ -59,7 +59,7 @@
 	: is_muted == "Muted" ? "🔇" 
 	: volume_val <= 30 && is_muted != "Muted" ? " ${volume_val}%" 
 	: volume_val < 70 && is_muted != "Muted" ? " ${volume_val}%" 
-	: " ${volume_val}%"}
+	: "   ${volume_val}%"}
     )
   )
 )
@@ -72,11 +72,11 @@
       :text {
 	EWW_BATTERY.BAT0.capacity == "${EWW_BATTERY.BAT0.capacity}%" ? "${EWW_BATTERY.BAT0.capacity}%" 
 	: EWW_BATTERY.BAT0.status == "Charging" ? " ${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.capacity < 15 && EWW_BATTERY.BAT0.status != "Charging" ? " ${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.capacity < 45 && EWW_BATTERY.BAT0.status != "Charging" ? " ${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.capacity < 60 && EWW_BATTERY.BAT0.status != "Charging" ? " ${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.capacity < 80 && EWW_BATTERY.BAT0.status != "Charging" ? " ${EWW_BATTERY.BAT0.capacity}%" 
-	: " ${EWW_BATTERY.BAT0.capacity}%"}
+	: EWW_BATTERY.BAT0.capacity < 15 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
+	: EWW_BATTERY.BAT0.capacity < 45 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
+	: EWW_BATTERY.BAT0.capacity < 60 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
+	: EWW_BATTERY.BAT0.capacity < 80 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
+	: "   ${EWW_BATTERY.BAT0.capacity}%"}
     )
   )
 )
@@ -97,9 +97,9 @@
       :onclick "eww open notification_window"
       (label 
 	:text {
-	    notifications.notifications != "[]" && do_not_disturb == false ? "🔔" 
-	  : do_not_disturb == true ? ""
-	  : ""
+	    notifications.notifications != "[]" && do_not_disturb == false ? "🔔•" 
+	  : do_not_disturb == true ? "🔕"
+	  : "🔔"
 	}
       )
     )

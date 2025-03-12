@@ -148,6 +148,7 @@ func (s *Server) Notify(appName string, replacesId uint32, appIcon string, summa
 	fmt.Println(string(dnd_state))
 	fmt.Println(hints["desktop-entry"])
 	fmt.Println(hints["sound-file"])
+	fmt.Println(actionList)
 	fmt.Println(s.ExtractImage(hints))
 	fmt.Printf("==== END %s ====\n\n", summary)
 
@@ -158,7 +159,7 @@ func (s Server) GetServerInformation() (string, string, string, string, *dbus.Er
 	return "Notification Server", "notifications", "1.0", "1.2", nil
 }
 
-func (s Server) GetServerCapabilities() ([]string, *dbus.Error) {
+func (s Server) GetCapabilities() ([]string, *dbus.Error) {
 	return []string{"actions", "body", "body-hyperlinks", "body-markup", "icon-static", "persistence", "sound"}, nil
 }
 
@@ -419,6 +420,9 @@ func main() {
 	path := dbus.ObjectPath(DBusPath)
 
 	conn.Export(s, path, DBusInterface)
+
+	match := dbus.WithMatchInterface(DBusInterface)
+	conn.AddMatchSignal(match)
 
 	select {}
 }
