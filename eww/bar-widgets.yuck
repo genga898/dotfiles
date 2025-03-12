@@ -71,7 +71,7 @@
     (label 
       :text {
 	EWW_BATTERY.BAT0.capacity == "${EWW_BATTERY.BAT0.capacity}%" ? "${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.status == "Charging" ? " ${EWW_BATTERY.BAT0.capacity}%" 
+	: EWW_BATTERY.BAT0.status == "Charging" ? "  ${EWW_BATTERY.BAT0.capacity}%" 
 	: EWW_BATTERY.BAT0.capacity < 15 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
 	: EWW_BATTERY.BAT0.capacity < 45 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
 	: EWW_BATTERY.BAT0.capacity < 60 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
