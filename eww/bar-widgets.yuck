@@ -1,114 +1,112 @@
 ;; Left;;
-(defwidget launcher []
-  (box :class "home"
+(defwidget launcher [ ]
+  (box
+    :class "home"
     :orientation "h"
-    (button :onclick "walker" "❄")
-  )
-)
+    (button
+      :onclick "walker"
+      "❄")))
 
-(defwidget workspaces []
-  (eventbox 
-    :class "workspace-container" 
-    :onscroll "sh ./scripts/change-active-workspace.sh {} ${current_workspace}" 
-    (box :class "workspaces"
-       :orientation "h"
-       :space-evenly true
-       :spacing 7
-    (for workspace in workspaces 
-      (button
-	  :class "workspace ${current_workspace == workspace.id ? "current" : ""}"
-	  :onclick "hyprctl dispatch workspace ${workspace.id}" 
-	  (label 
-	    :text "${current_workspace == workspace.id ? "◉" : "ⵔ"}")
-      )))
-    )
-  )
+(defwidget workspaces [ ]
+  (eventbox
+    :class "workspace-container"
+    :onscroll "sh ./scripts/change-active-workspace.sh {} ${current_workspace}"
+    (box
+      :class "workspaces"
+      :orientation "h"
+      :space-evenly true
+      :spacing 7
+      (for workspace in workspaces
+        (button
+          :class "workspace ${current_workspace == workspace.id ? "current" : ""}"
+          :onclick "hyprctl dispatch workspace ${workspace.id}"
+          (label
+            :text "${current_workspace == workspace.id ? "◉" : "ⵔ"}"))))))
 
-
-
-(defwidget window []
-  (box :class "current_window"
+(defwidget window [ ]
+  (box
+    :class "current_window"
     :orientation "h"
-    (label 
+    (label
       :limit-width 15
       :truncate-left true
-      :text {current_window == "null" ? "NixOs" : "${current_window}"})
-  )
-)
-
+      :text { current_window == "null" ? "NixOs" : "${current_window}" })))
 
 ;; Center ;;
-(defwidget clock []
-  (box :class "clock-face" 
-    :tooltip "${formattime(EWW_TIME, '%d-%B-%Y  %H:%M')}" 
-    "${formattime(EWW_TIME, '%d  %b  %H:%M')}")
-)
+(defwidget clock [ ]
+  (box
+    :class "clock-face"
+    :tooltip "${formattime(EWW_TIME,'%d-%B-%Y  %H:%M')}"
+    "${formattime(EWW_TIME,'%d  %b  %H:%M')}"))
 
 ;; Right;;
-(defwidget backlight []
-  (box :class "backlight"
-    "  ${round(brightness_val, 0)}%"
-  )
-)
+(defwidget backlight [ ]
+  (box
+    :class "backlight"
+    "  ${round(brightness_val,0)}%"))
 
-(defwidget volume []
-  (box :class "volume"
-    (label 
+(defwidget volume [ ]
+  (box
+    :class "volume"
+    (label
       :text {
-	volume_val == "${volume_val}%" ? "${volume_val}%" 
-	: is_muted == "Muted" ? "🔇" 
-	: volume_val <= 30 && is_muted != "Muted" ? " ${volume_val}%" 
-	: volume_val < 70 && is_muted != "Muted" ? " ${volume_val}%" 
-	: "   ${volume_val}%"}
-    )
-  )
-)
+        volume_val == "${volume_val}%"
+        ? "${volume_val}%"
+        : is_muted == "Muted"
+        ? "🔇"
+        : volume_val <= 30&&is_muted != "Muted"
+        ? " ${volume_val}%"
+        : volume_val < 70&&is_muted != "Muted"
+        ? " ${volume_val}%"
+        : "   ${volume_val}%"
+      })))
 
-(defwidget battery [] 
-  (box 
-    :class "battery ${EWW_BATTERY.BAT0.status == "Charging" ? "charging_bat": ""} 
-    ${EWW_BATTERY.BAT0.capacity <= 20 && EWW_BATTERY.BAT0.status != "Charging" ? "low_bat": ""}" 
-    (label 
+(defwidget battery [ ]
+  (box
+    :class "battery ${EWW_BATTERY.BAT0.status == "Charging" ? "charging_bat" : ""}
+    ${EWW_BATTERY.BAT0.capacity <= 20&&EWW_BATTERY.BAT0.status != "Charging" ? "low_bat" : ""}"
+    (label
       :text {
-	EWW_BATTERY.BAT0.capacity == "${EWW_BATTERY.BAT0.capacity}%" ? "${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.status == "Charging" ? "  ${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.capacity < 15 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.capacity < 45 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.capacity < 60 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
-	: EWW_BATTERY.BAT0.capacity < 80 && EWW_BATTERY.BAT0.status != "Charging" ? "   ${EWW_BATTERY.BAT0.capacity}%" 
-	: "   ${EWW_BATTERY.BAT0.capacity}%"}
-    )
-  )
-)
+        EWW_BATTERY.BAT0.capacity == "${EWW_BATTERY.BAT0.capacity}%"
+        ? "${EWW_BATTERY.BAT0.capacity}%"
+        : EWW_BATTERY.BAT0.status == "Charging"
+        ? "⚡${EWW_BATTERY.BAT0.capacity}%"
+        : EWW_BATTERY.BAT0.capacity < 15&&EWW_BATTERY.BAT0.status != "Charging"
+        ? "   ${EWW_BATTERY.BAT0.capacity}%"
+        : EWW_BATTERY.BAT0.capacity < 45&&EWW_BATTERY.BAT0.status != "Charging"
+        ? "   ${EWW_BATTERY.BAT0.capacity}%"
+        : EWW_BATTERY.BAT0.capacity < 60&&EWW_BATTERY.BAT0.status != "Charging"
+        ? "   ${EWW_BATTERY.BAT0.capacity}%"
+        : EWW_BATTERY.BAT0.capacity < 80&&EWW_BATTERY.BAT0.status != "Charging"
+        ? "   ${EWW_BATTERY.BAT0.capacity}%"
+        : "   ${EWW_BATTERY.BAT0.capacity}%"
+      })))
 
-(defwidget system-tray []
-  (systray 
-    :class "sys-tray" 
-    :spacing 5 
+(defwidget system-tray [ ]
+  (systray
+    :class "sys-tray"
+    :spacing 5
     :prepend-new true
-    :space-evenly true)
-)
+    :space-evenly true))
 
-
-
-(defwidget notification-center []
-  (box :class "notification"
-    (button 
+(defwidget notification-center [ ]
+  (box
+    :class "notification"
+    (button
       :onclick "eww open notification_window"
-      (label 
-	:text {
-	    notifications.notifications != "[]" && do_not_disturb == false ? "🔔•" 
-	  : do_not_disturb == true ? "🔕"
-	  : "🔔"
-	}
-      )
-    )
-  )
-)
+      (label
+        :text {
+          notifications.notifications != "[]"&&do_not_disturb == false
+          ? "🔔•"
+          : do_not_disturb == true
+          ? "🔕"
+          : "🔔"
+        }))))
 
-(defwidget power [] 
-  (box :class "power"
+(defwidget power [ ]
+  (box
+    :class "power"
     :orientation "h"
-    (button :onclick "bash $HOME/.config/rofi/scripts/powermenu_t1" "⏻")
-  )
-)
+    (button
+      :onclick "bash $HOME/.config/rofi/scripts/powermenu_t1"
+      "⏻")))
