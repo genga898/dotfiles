@@ -2,6 +2,9 @@ return {
   'folke/noice.nvim',
   event = 'VeryLazy',
   opts = {
+    presets = {
+      lsp_doc_border = true,
+    },
     routes = {
       {
         filter = {
@@ -13,7 +16,30 @@ return {
         },
       },
     },
-    -- your other opts
+    lsp = {
+      progress = {
+        enabled = false,
+      },
+      hover = {
+        enabled = true,
+        opts = {
+          vim.keymap.set({ 'n', 'i', 's' }, '<c-f>', function()
+            if not require('noice.lsp').scroll(4) then
+              return '<c-f>'
+            end
+          end),
+
+          vim.keymap.set({ 'n', 'i', 's' }, '<c-b>', function()
+            if not require('noice.lsp').scroll(-4) then
+              return '<c-b>'
+            end
+          end),
+        },
+      },
+      signature = {
+        enabled = true,
+      },
+    },
   },
   dependencies = {
     'MunifTanjim/nui.nvim',

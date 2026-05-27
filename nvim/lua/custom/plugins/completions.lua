@@ -27,7 +27,6 @@ return {
       signature = { enabled = true },
       completion = {
         menu = {
-          border = 'rounded',
           winhighlight = 'Normal:TelescopePromptNormal',
           scrollbar = false,
           draw = {
@@ -49,7 +48,6 @@ return {
         documentation = {
           auto_show = true,
           window = {
-            border = 'rounded',
             scrollbar = false,
           },
         },

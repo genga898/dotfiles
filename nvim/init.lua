@@ -5,14 +5,36 @@ vim.keymap.set('n', '<leader>ft', '<cmd>lua MiniFiles.open()<CR>')
 vim.keymap.set('n', 'T', '<cmd>ToggleTerm<CR>')
 
 vim.opt.signcolumn = 'yes:2'
-vim.opt.foldcolumn = '1'
+vim.opt.foldcolumn = '2'
+vim.opt.foldmethod = 'indent'
+vim.opt.foldenable = false
+vim.opt.foldlevel = 999
+vim.opt.foldtext = ''
+vim.opt.fillchars = {
+  fold = ' ',
+  foldclose = '',
+  foldopen = '',
+  foldsep = ' ',
+  foldinner = ' ',
+}
 
 vim.opt.autoindent = true
 vim.opt.smartindent = true
+vim.opt.winborder = 'rounded'
 
 -- allow the columns to blend in with the color scheme
 vim.cmd.highlight 'SignColumn guibg=transparent'
 vim.cmd.highlight 'FoldColumn guibg=transparent'
+
+-- neovide settings
+if vim.g.neovide then
+  vim.g.neovide_floating_corner_radius = 0.5
+  vim.opt.winborder = 'solid'
+end
+
+if vim.lsp.inlay_hint then
+  vim.lsp.inlay_hint.enable(true, { 0 })
+end
 
 -- Enable nerd font option
 vim.g.have_nerd_font = true
@@ -94,19 +116,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
   callback = function()
-    vim.highlight.on_yank()
-  end,
-})
-
--- Add lsp for yuck files
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter' }, {
-  pattern = { '*.yuck' },
-  callback = function(event)
-    print(string.format('starting yuck;s for %s', vim.inspect(event)))
-    vim.lsp.start {
-      name = 'YuckLs',
-      cmd = { 'YuckLS' }, --this must be where you cloned this repo to.
-      root_dir = vim.fn.getcwd(),
-    }
+    vim.hl.on_yank()
   end,
 })

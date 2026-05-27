@@ -1,6 +1,9 @@
 return {
   {
     'neovim/nvim-lspconfig',
+    opts = {
+      inlay_hints = { enabled = true },
+    },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
@@ -8,82 +11,25 @@ return {
       'WhoIsSethDaniel/mason-tool-installer.nvim',
       'saghen/blink.cmp',
       {
-        'folke/lazydev.nvim',
-        ft = 'lua',
-        opts = {
-          library = {
-            -- Load luvit types when the `vim.uv` word is found
-            { path = 'luvit-meta/library', words = { 'vim%.uv' } },
-          },
-        },
-      },
-      { 'j-hui/fidget.nvim',       opts = {} },
-      {
         'seblyng/roslyn.nvim',
         ft = { 'cs', 'razor' },
-        opts = {
-          exe = 'Microsoft.CodeAnalysis.LanguageServer',
-        },
-        dependencies = {
-          'tris203/rzls.nvim',
-        },
       },
     },
     config = function()
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
-      require('lspconfig').lua_ls.setup { capabilities = capabilities }
-      require('lspconfig').tailwindcss.setup { capabilities = capabilities }
-      require('rzls').setup {
-        capabilities = capabilities,
-        on_attach = require('blink.cmp').on_attach,
-        path = 'rzls',
-      }
+      local enable = vim.lsp.enable
 
-      require('roslyn').setup {
-        args = {
-          '--stdio',
-          '--logLevel=Information',
-          '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
-          '--razorSourceGenerator=/etc/profiles/per-user/genga/lib/roslyn-ls/Microsoft.CodeAnalysis.Razor.Compiler.dll',
-          '--razorDesignTimePath=/etc/profiles/per-user/genga/lib/rzls/Targets/Microsoft.NET.Sdk.Razor.DesignTime.targets',
-        },
-        ---@diagnostic disable-next-line: missing-fields
-        config = {
-          capabilities = capabilities,
-          on_attach = require('blink.cmp').on_attach,
-          handlers = require 'rzls.roslyn_handlers',
-          settings = {
-            ['csharp|inlay_hints'] = {
-              csharp_enable_inlay_hints_for_implicit_object_creation = true,
-              csharp_enable_inlay_hints_for_implicit_variable_types = true,
-
-              csharp_enable_inlay_hints_for_lambda_parameter_types = true,
-              csharp_enable_inlay_hints_for_types = true,
-              dotnet_enable_inlay_hints_for_indexer_parameters = true,
-              dotnet_enable_inlay_hints_for_literal_parameters = true,
-              dotnet_enable_inlay_hints_for_object_creation_parameters = true,
-              dotnet_enable_inlay_hints_for_other_parameters = true,
-              dotnet_enable_inlay_hints_for_parameters = true,
-              dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
-              dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
-              dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
-            },
-            ['csharp|code_lens'] = {
-              dotnet_enable_references_code_lens = true,
+      vim.lsp.config('lua_ls', {
+        settings = {
+          Lua = {
+            diagnostics = {
+              -- Get the language server to recognize the `vim` global
+              globals = { 'vim' },
             },
           },
         },
-        init = function()
-          -- we add the razor filetypes before the plugin loads
-          vim.filetype.add {
-            extension = {
-              razor = 'razor',
-              cshtml = 'razor',
-            },
-          }
-        end,
-      }
-      require('lspconfig').nixd.setup {
+      })
+
+      vim.lsp.config('nixd', {
         cmd = { 'nixd' },
         settings = {
           nixd = {
@@ -95,36 +41,32 @@ return {
             },
           },
         },
-        capabilities = capabilities,
-      }
-      require('lspconfig').gleam.setup { capabilities = capabilities }
-      require('lspconfig').biome.setup { capabilities = capabilities }
-
+      })
       -- Vue language server config
-      local mason_registry = require 'mason-registry'
-      local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() ..
-      '/node_modules/@vue/language-server'
-      require('lspconfig').ts_ls.setup {
-        init_options = {
-          plugins = {
-            {
-              name = '@vue/typescript-plugin',
-              location = vue_language_server_path,
-              languages = { 'vue' },
+      local vue_language_server_path = vim.fn.stdpath 'data' .. 'mason/packages/vue-language-server/node_modules/@vue/language-server'
+      local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+      local vue_plugin = {
+        name = '@vue/typescript-plugin',
+        location = vue_language_server_path,
+        languages = { 'vue' },
+        configNamespace = 'typescript',
+      }
+      local vtsls_config = {
+        settings = {
+          vtsls = {
+            tsserver = {
+              globalPlugins = {
+                vue_plugin,
+              },
             },
           },
         },
-        capabilities = capabilities,
+        filetypes = tsserver_filetypes,
       }
-      require('lspconfig').volar.setup {
-        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
-        init_options = {
-          vue = {
-            hybridMode = false,
-          },
-        },
-        capabilities = capabilities,
-      }
+
+      vim.lsp.config('vtsls', vtsls_config)
+
+      enable { 'lua_ls', 'rust_analyzer', 'nixd', 'gleam', 'biome', 'qmlls', 'vue-ls', 'vtsls', 'html', 'tailwindcss', 'zls', 'roslyn', 'cssls' }
 
       vim.api.nvim_create_autocmd('LspAttach', {
         callback = function(args)
@@ -167,7 +109,7 @@ return {
           -- Execute lsp code actions
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
 
-          if client.supports_method 'textDocument/formatting' then
+          if client:supports_method 'textDocument/formatting' then
             -- Format buffer on save
             vim.api.nvim_create_autocmd('BufWritePre', {
               buffer = args.buf,
@@ -178,19 +120,6 @@ return {
           end
         end,
       })
-
-      -- Define default servers to be installed
-      local servers = {
-        lua_ls = {
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-            },
-          },
-        },
-      }
 
       ---@diagnostic disable-next-line: missing-fields
       require('mason').setup {
@@ -207,24 +136,13 @@ return {
         },
       }
 
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
+      local ensure_installed = {
         'stylua', -- Used to format Lua code
-        'vue-language-server',
-        'html-lsp',
-      })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-      ---@diagnostic disable-next-line missing-fields
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+        'vue_ls',
+        'html',
+        'emmet_language_server',
       }
+      require('mason-lspconfig').setup { ensure_installed = ensure_installed }
     end,
   },
 }

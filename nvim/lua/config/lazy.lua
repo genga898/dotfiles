@@ -6,7 +6,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { 'Failed to clone lazy.nvim:\n', 'ErrorMsg' },
-      { out,                            'WarningMsg' },
+      { out, 'WarningMsg' },
       { '\nPress any key to exit...' },
     }, true, {})
     vim.fn.getchar()
@@ -22,12 +22,19 @@ vim.g.maplocalleader = '\\'
 require('lazy').setup {
   spec = {
     {
-      'https://github.com/rebelot/kanagawa.nvim',
+      'rose-pine/neovim',
       lazy = false,
       priority = 1000, -- Make sure to load this before all the other start plugins.
       config = function()
-        vim.cmd.colorscheme 'kanagawa'
+        vim.cmd.colorscheme 'rose-pine'
       end,
+    },
+
+    {
+      'j-hui/fidget.nvim',
+      opts = {
+        -- options
+      },
     },
 
     'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
@@ -50,26 +57,6 @@ require('lazy').setup {
           topdelete = { text = '‾' },
           changedelete = { text = '~' },
         },
-      },
-    },
-    {
-      'lewis6991/hover.nvim',
-      config = function()
-        require('hover').setup {
-          init = function()
-            require 'hover.providers.lsp'
-          end,
-
-          preview_opts = {
-            border = 'rounded',
-          },
-        }
-
-        vim.keymap.set('n', 'K', require('hover').hover, { desc = 'hover.nvim' })
-      end,
-      dependencies = {
-        'nvim-treesitter/nvim-treesitter', -- optional
-        'nvim-tree/nvim-web-devicons',     -- optional
       },
     },
     -- import your plugins
