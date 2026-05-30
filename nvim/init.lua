@@ -4,6 +4,11 @@ vim.keymap.set('n', '<space><space>x', '<cmd>source %<CR>')
 vim.keymap.set('n', '<leader>ft', '<cmd>lua MiniFiles.open()<CR>')
 vim.keymap.set('n', 'T', '<cmd>ToggleTerm<CR>')
 
+vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.wo[0][0].foldmethod = 'expr'
+
+vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
 vim.opt.signcolumn = 'yes:2'
 vim.opt.foldcolumn = '2'
 vim.opt.foldmethod = 'indent'
@@ -117,5 +122,12 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
   callback = function()
     vim.hl.on_yank()
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'razor', 'cshtml', 'nix' },
+  callback = function()
+    vim.treesitter.start()
   end,
 })
